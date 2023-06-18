@@ -78,8 +78,8 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'mangadb',
-        'USER': 'kusha',
-        'PASSWORD': 'Million$',
+        'USER': 'aayus',
+        'PASSWORD': 'theonepieceisreal',
         'HOST': 'localhost',
         'PORT': '5432',
     }
