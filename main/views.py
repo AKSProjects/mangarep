@@ -19,6 +19,7 @@ def access_table(request, manga_id):
                 return HttpResponse('Manga not found')
     except OperationalError:
         return HttpResponse('Table access failed')
+        
 
 def access_top_100(request):
     try:
@@ -39,7 +40,7 @@ def access_top_100(request):
                     }
                     mangas.append(manga)
                 context = {'mangas': mangas}
-                return render(request, 'top_mangas.html', context)
+                return render(request, 'main/top_mangas.html', context)
             else:
                 return HttpResponse('No mangas found')
     except OperationalError:
@@ -64,8 +65,11 @@ def access_top_seinen(request):
                     }
                     mangas.append(manga)
                 context = {'mangas': mangas}
-                return render(request, 'seinen_mangas.html', context)
+                return render(request, 'main/seinen_mangas.html', context)
             else:
                 return HttpResponse('No mangas found')
     except OperationalError:
         return HttpResponse('Table access failed')
+    
+def home(response):
+    return render (response, "main/home.html", {})
