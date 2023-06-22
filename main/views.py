@@ -19,7 +19,6 @@ def access_table(request, manga_id):
                 return HttpResponse('Manga not found')
     except OperationalError:
         return HttpResponse('Table access failed')
-        
 
 def access_top_100(request):
     try:
@@ -40,16 +39,16 @@ def access_top_100(request):
                     }
                     mangas.append(manga)
                 context = {'mangas': mangas}
-                return render(request, 'main/top_mangas.html', context)
+                return render(request, 'top_mangas.html', context)
             else:
                 return HttpResponse('No mangas found')
     except OperationalError:
         return HttpResponse('Table access failed')
     
-def access_top_seinen(request):
+def access_top_shounen(request):
     try:
         with connection.cursor() as cursor:
-            cursor.execute('''SELECT manga_id, title, type, chapters, status, score, main_picture FROM manga WHERE sfw = 'True' AND demographics LIKE '%Seinen%'AND main_picture IS NOT NULL AND score IS NOT NULL ORDER BY score DESC  LIMIT 100''')
+            cursor.execute('''SELECT manga_id, title, type, chapters, status, score, main_picture FROM manga WHERE sfw = 'True' AND demographics LIKE '%Shounen%' AND main_picture IS NOT NULL AND score IS NOT NULL ORDER BY score DESC LIMIT 100''')
             rows = cursor.fetchall()
             if rows:
                 mangas = []
@@ -65,11 +64,58 @@ def access_top_seinen(request):
                     }
                     mangas.append(manga)
                 context = {'mangas': mangas}
-                return render(request, 'main/seinen_mangas.html', context)
+                return render(request, 'shounen_mangas.html', context)
+            else:
+                return HttpResponse('No mangas found')
+    except OperationalError:
+        return HttpResponse('Table access failed')
+
+def access_top_manhua(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('''SELECT manga_id, title, type, chapters, status, score, main_picture FROM manga WHERE sfw = 'True' AND type='manhua' AND main_picture IS NOT NULL AND score IS NOT NULL ORDER BY score DESC LIMIT 100''')
+            rows = cursor.fetchall()
+            if rows:
+                mangas = []
+                for row in rows:
+                    manga = {
+                        'manga_id': row[0],
+                        'title': row[1],
+                        'type': row[2],
+                        'chapters': row[3],
+                        'status': row[4],
+                        'score': row[5],
+                        'main_picture': row[6]
+                    }
+                    mangas.append(manga)
+                context = {'mangas': mangas}
+                return render(request, 'manhuas.html', context)
             else:
                 return HttpResponse('No mangas found')
     except OperationalError:
         return HttpResponse('Table access failed')
     
-def home(response):
-    return render (response, "main/home.html", {})
+def access_top_shoujo(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('''SELECT manga_id, title, type, chapters, status, score, main_picture FROM manga WHERE sfw = 'True' AND demographics LIKE '%Shoujo%' AND main_picture IS NOT NULL AND score IS NOT NULL ORDER BY score DESC LIMIT 100''')
+            rows = cursor.fetchall()
+            if rows:
+                mangas = []
+                for row in rows:
+                    manga = {
+                        'manga_id': row[0],
+                        'title': row[1],
+                        'type': row[2],
+                        'chapters': row[3],
+                        'status': row[4],
+                        'score': row[5],
+                        'main_picture': row[6]
+                    }
+                    mangas.append(manga)
+                context = {'mangas': mangas}
+                return render(request, 'shoujo_mangas.html', context)
+            else:
+                return HttpResponse('No mangas found')
+    except OperationalError:
+        return HttpResponse('Table access failed')
