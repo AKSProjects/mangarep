@@ -6,7 +6,8 @@ from django.db.utils import OperationalError
 
 # Create your views here.
 
-
+def home(response):
+    return render (response, "main/home.html", {})
 
 def access_table(request, manga_id):
     try:
@@ -39,7 +40,32 @@ def access_top_100(request):
                     }
                     mangas.append(manga)
                 context = {'mangas': mangas}
-                return render(request, 'top_mangas.html', context)
+                return render(request, 'main/top_mangas.html', context)
+            else:
+                return HttpResponse('No mangas found')
+    except OperationalError:
+        return HttpResponse('Table access failed')
+    
+def access_top_seinen(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('''SELECT manga_id, title, type, chapters, status, score, main_picture FROM manga WHERE sfw = 'True' AND demographics LIKE '%Seinen%'AND main_picture IS NOT NULL AND score IS NOT NULL ORDER BY score DESC  LIMIT 100''')
+            rows = cursor.fetchall()
+            if rows:
+                mangas = []
+                for row in rows:
+                    manga = {
+                        'manga_id': row[0],
+                        'title': row[1],
+                        'type': row[2],
+                        'chapters': row[3],
+                        'status': row[4],
+                        'score': row[5],
+                        'main_picture': row[6]
+                    }
+                    mangas.append(manga)
+                context = {'mangas': mangas}
+                return render(request, 'main/seinen_mangas.html', context)
             else:
                 return HttpResponse('No mangas found')
     except OperationalError:
@@ -64,7 +90,7 @@ def access_top_shounen(request):
                     }
                     mangas.append(manga)
                 context = {'mangas': mangas}
-                return render(request, 'shounen_mangas.html', context)
+                return render(request, 'main/shounen_mangas.html', context)
             else:
                 return HttpResponse('No mangas found')
     except OperationalError:
@@ -89,7 +115,7 @@ def access_top_manhua(request):
                     }
                     mangas.append(manga)
                 context = {'mangas': mangas}
-                return render(request, 'manhuas.html', context)
+                return render(request, 'main/manhuas.html', context)
             else:
                 return HttpResponse('No mangas found')
     except OperationalError:
@@ -114,8 +140,10 @@ def access_top_shoujo(request):
                     }
                     mangas.append(manga)
                 context = {'mangas': mangas}
-                return render(request, 'shoujo_mangas.html', context)
+                return render(request, 'main/shoujo_mangas.html', context)
             else:
                 return HttpResponse('No mangas found')
     except OperationalError:
         return HttpResponse('Table access failed')
+    
+    
