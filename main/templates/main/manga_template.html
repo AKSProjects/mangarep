@@ -1,0 +1,121 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{manga.title}}{% endblock %}
+
+
+{% block content %}
+
+<html>
+<head>
+  <title>{{ manga.title }}</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #181a1b;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #1f1f1f;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .main-picture {
+      text-align: center;
+    }
+
+    .main-picture img {
+      max-width: 100%;
+      height: auto;
+      margin-top: 20px; 
+      margin-bottom: 20px; 
+    }
+
+    .synopsis {
+      padding: 15px;
+      background-color: #181a1b;
+    }
+
+    .details {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .details-box,
+    .author-box {
+      flex: 0 0 48%;
+      padding: 7px;
+      background-color: #181a1b;
+      align-items: center;
+    }
+
+    .toptitle{
+      flex: 0 0 48%;
+      padding: 7px;
+      background-color: #181a1b;
+      align-items: center;
+    }
+
+    h2 {
+      font-size: 18px;
+      margin-bottom: 10px;
+      color: white;
+    }
+
+    p {
+      margin: 0;
+      color: grey;
+
+    }
+    p1 {
+      font-size: 22px;
+      margin: 0;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Main Picture -->
+    <div class="main-picture">
+        <div class="toptitle">
+          <p1> {{manga.title}} </p1>
+        </div>
+            <img src="{{ manga.main_picture }}" alt="Main Picture" width="200" height="150">
+    </div>
+
+    <!-- Synopsis -->
+    <div class="synopsis">
+      <h2>Synopsis:</h2>
+      <p>{{ manga.synopsis }}</p>
+    </div>
+
+    <!-- Details -->
+    <div class="details">
+      <div class="details-box">
+        <h2>Details:</h2>
+        <p>Title: {{ manga.title }}</p>
+        <p>Title (english): {{ manga.title_english }}</p>
+        <p>Type: {{ manga.type }}</p>
+        <p>Chapters: {{ manga.chapters }}</p>
+        <p>Status: {{ manga.status }}</p>
+        <p>Score: {{ manga.score }}</p>
+        <p>Genres: {{ manga.genres }}</p>
+        <p>Themes: {{ manga.themes }}</p>
+        <p>Demographics: {{ manga.demographics }}</p>
+      </div>
+
+      <div class="author-box">
+        <h2>Author:</h2>
+        <p>{{ manga.authors }}</p>
+        <h2>Background:</h2>
+        <p>{{ manga.background }}</p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+{% endblock %}

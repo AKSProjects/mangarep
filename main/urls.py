@@ -9,6 +9,7 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
+    path('manga/<int:manga_id>/', views.manga_template, name='manga_detail'),
     path('', views.home, name='home'),
     path('access-table/<int:manga_id>/', access_table, name='access_table'),
     path('access-top-100/', views.access_top_100, name='access_top_100'),
