@@ -5,8 +5,9 @@
 {% block content %}
 
 
-  <style>
-    html, body { 
+<style>
+  html,
+  body {
       background-color: #181a1b;
       width:100%; 
       height:100%; 
@@ -18,87 +19,85 @@
         overflow-x: hidden;
       }
 
-    h1 {
+  h1 {
       background-color: #1f1f1f;
       color: #9affff;
       padding: 10px;
       text-align: center;
       margin: 0;
-    }
+  }
 
-    .table-container {
-      background-color: #181a1b;
-      padding: 10px;
-    }
 
-    table {
-      border-collapse: collapse;
-      width: 100%;
-    }
-
-    th,
-    td {
+  th,
+  td {
       padding: 8px;
       text-align: center;
-    }
+  }
 
-    th {
-        color: #9affff;
-    }
+  th {
+      color: #9affff;
+  }
 
-    td {
-        color: #9affff;
-    }
-  
+  td {
+      color: #9affff;
+  }
 
-    img {
-      float: center;
-      margin-left: 10px;
-    }
-
-    ul {
+  ul {
       list-style-type: disc;
-    }
+  }
 
-
-    li {
+  li {
       margin-bottom: 5px;
-    }
+  }
 
-  </style>
+  .grid-container {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr); /* Creates 5 equal-width columns */
+      grid-template-rows: repeat(10, 1fr); /* Creates 10 equal-height rows */
+      grid-gap: 10px; /* Adds a 10px gap between grid items */
+      /* Adjust the height of the grid container if needed */
+      overflow: auto; /* Enable scrolling if content overflows */
+  }
+
+  .grid-item {
+      margin-top: 10px;
+      background-color: #1f1f1f;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      
+  }
+
+  img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+  }
+
+  .manga-title {
+      color: #cccccc;
+      margin-top: 10px;
+      text-align: center;
+  }
+</style>
 
 
 </head>
 <body>
   <h1>Top 100 Manhuas</h1>
 
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Manga Cover</th>
-          
-          <th>Title</th>
-          <th>Type</th>
-          <th>Chapters</th>
-          <th>Status</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for manga in mangas %}
-        <tr>
-          <td><img src="{{ manga.main_picture }}" ></td>
-          
-          <td>{{ manga.title }}</td>
-          <td>{{ manga.type }}</td>
-          <td>{{ manga.chapters }}</td>
-          <td>{{ manga.status }}</td>
-          <td>{{ manga.score }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <div class="grid-container">
+    {% for manga in mangas %}
+    <div class="grid-item">
+        <a href="{% url 'manga_detail' manga.manga_id %}">
+            <img src="{{ manga.main_picture }}" alt="Image" width="300" height="200">
+        </a>
+        <div class="manga-title">{{ manga.title }}</div>
+    </div>
+    {% endfor %}
   </div>
+
 
 {% endblock %}

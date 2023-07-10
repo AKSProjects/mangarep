@@ -2,12 +2,20 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from django.db import connection
 from django.db.utils import OperationalError
+from django.shortcuts import render, get_object_or_404
+from .models import Manga
+import json
+
 
 
 # Create your views here.
 
-def home(response):
-    return render (response, "main/home.html", {})
+def home(request):
+    manga = Manga.objects.using('default').all()
+    context = {
+        'mangas': manga
+    }
+    return render(request, 'main/home.html', context)
 
 def access_table(request, manga_id):
     try:
@@ -145,5 +153,63 @@ def access_top_shoujo(request):
                 return HttpResponse('No mangas found')
     except OperationalError:
         return HttpResponse('Table access failed')
-    
-    
+
+
+def fetch_manga_data_from_database(manga_id):
+    try:
+        with connection.cursor() as cursor:
+            query = '''
+                SELECT main_picture, manga_id, synopsis, title, type, chapters, status, score, genres, themes, demographics, authors, background, title_english
+                FROM manga
+                WHERE sfw = 'True'
+                AND score IS NOT NULL
+                AND main_picture IS NOT NULL
+                AND manga_id = %s
+                ORDER BY score DESC
+            '''
+            cursor.execute(query, [manga_id])
+            row = cursor.fetchone()
+            if row:
+                author_data = row[11]  # Assuming the author data is in the 12th position
+                first_name_start = author_data.find("'first_name':") + len("'first_name': '")
+                first_name_end = author_data.find("'", first_name_start)
+                first_name = author_data[first_name_start:first_name_end]
+
+                last_name_start = author_data.find("'last_name':") + len("'last_name': '")
+                last_name_end = author_data.find("'", last_name_start)
+                last_name = author_data[last_name_start:last_name_end]
+
+                author_name = f"{first_name} {last_name}"
+
+                manga_data = {
+                    'main_picture': row[0],
+                    'manga_id': row[1],
+                    'synopsis': row[2],
+                    'title': row[3],
+                    'type': row[4],
+                    'chapters': row[5],
+                    'status': row[6],
+                    'score': row[7],
+                    'genres': row[8],
+                    'themes': row[9],
+                    'demographics': row[10],
+                    'authors': author_name,
+                    'background': row[12],
+                    'title_english': row[13],
+                    
+                }
+                return manga_data
+            else:
+                return None
+    except Exception as e:
+        return None
+
+
+
+def manga_template(request, manga_id):
+    manga_data = fetch_manga_data_from_database(manga_id)
+    if manga_data:
+        context = {'manga': manga_data}
+        return render(request, 'main/manga_template.html', context)
+    else:
+        return HttpResponse('Manga not found')

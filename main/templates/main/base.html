@@ -104,6 +104,53 @@
             transition: margin-left 0.5s;
         }
 
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .dropbtn {
+            font-size: 25px;
+            color: grey;
+            padding: 0px;
+            background-color: black;
+            border: 1px;
+            cursor: pointer;
+            margin-right: 0px;
+            
+
+        }
+        
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 160px;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            z-index: 1;
+            padding: 10px;
+        }
+        
+        .dropdown-content a {
+            color: grey;
+            padding: 8px 0;
+            text-decoration: none;
+            display: block;
+        }
+        
+        .dropdown-content a:hover {
+            color: #f1f1f1;
+        }
+        
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        
+        .dropdown:hover .dropbtn {
+            color: #f1f1f1;
+        }
+
+
         @media (max-width: 768px) {
             .sidenav {
                 width: 20px; /* Adjust retracted width for smaller screens */
@@ -181,10 +228,16 @@
                     Home
                 </a>
                 <a href="/access-top-100">Top 100</a>
-                <a href="/access-top-seinen">Seinen</a>
-                <a href="/access-top-shounen">Shounen</a>
-                <a href="/access-top-manhua">Manhua</a>
-                <a href="/access-top-shoujo">Shoujo</a>
+                <div class="dropdown">
+                    
+                    <button class="dropbtn">Genres</button>
+                    <div class="dropdown-content">
+                        <a href="/access-top-seinen">Seinen</a>
+                        <a href="/access-top-shounen">Shounen</a>
+                        <a href="/access-top-manhua">Manhua</a>
+                        <a href="/access-top-shoujo">Shoujo</a>
+                    </div>
+                </div>
             </div>
         </div>
         
@@ -202,7 +255,7 @@
             var hamburger = document.querySelector(".hamburger");
             sidebar.classList.toggle("expanded");
             sidebar.classList.toggle("closed");
-            hamburger.classList.toggle("closed"); // Toggle the "closed" class on the hamburger
+            //hamburger.classList.toggle("closed"); 
         }
 
         window.addEventListener("mousemove", function(event) {
@@ -210,16 +263,16 @@
             var mousePosition = event.pageX;
         
             var sidebar = document.getElementById("sidenav");
-            var hamburger = document.querySelector(".hamburger");
+            //var hamburger = document.querySelector(".hamburger");
         
-            if (mousePosition < (pageWidth / 8)) { // Check if the mouse is positioned at the left 1/8 of the page
+            if (mousePosition < (pageWidth / 10)) { 
                 sidebar.classList.add("expanded");
                 sidebar.classList.remove("closed");
-                hamburger.classList.remove("closed");
+                //hamburger.classList.remove("closed");
             } else {
                 sidebar.classList.remove("expanded");
                 sidebar.classList.add("closed");
-                hamburger.classList.add("closed");
+                //hamburger.classList.add("closed");
             }
         });
     </script>
