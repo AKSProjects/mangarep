@@ -1,0 +1,94 @@
+<!-- top_mangas.html -->
+{% extends 'main/base.html' %}
+
+{% block title %}Classics{% endblock %}
+
+{% block content %}
+<style>
+    html,
+    body {
+        background-color: #181a1b;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    h1 {
+        background-color: #1f1f1f;
+        color: #9affff;
+        padding: 10px;
+        text-align: center;
+        margin: 0;
+    }
+
+
+    th,
+    td {
+        padding: 8px;
+        text-align: center;
+    }
+
+    th {
+        color: #9affff;
+    }
+
+    td {
+        color: #9affff;
+    }
+
+    ul {
+        list-style-type: disc;
+    }
+
+    li {
+        margin-bottom: 5px;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr); /* Creates 5 equal-width columns */
+        grid-template-rows: repeat(10, 1fr); /* Creates 10 equal-height rows */
+        grid-gap: 10px; /* Adds a 10px gap between grid items */
+        /* Adjust the height of the grid container if needed */
+        overflow: auto; /* Enable scrolling if content overflows */
+    }
+
+    .grid-item {
+        margin-top: 10px;
+        background-color: #1f1f1f;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .manga-title {
+        color: #cccccc;
+        margin-top: 10px;
+        text-align: center;
+    }
+</style>
+
+<h1>Classics</h1>
+
+<div class="grid-container">
+    {% for manga in mangas %}
+    <div class="grid-item">
+        <a href="{% url 'manga_detail' manga.manga_id %}">
+            <img src="{{ manga.main_picture }}" alt="Image" width="300" height="200">
+        </a>
+        <div class="manga-title">{{ manga.title }}</div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

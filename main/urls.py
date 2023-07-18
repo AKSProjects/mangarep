@@ -17,7 +17,8 @@ urlpatterns = [
     path('access-top-shounen/', views.access_top_shounen, name="access_top_shounen"),
     path('access-top-manhua/', views.access_top_manhua, name="access_top_manhua"),
     path('access-top-shoujo/', views.access_top_shoujo, name="access_top_shoujo"),
+    path('access-classics/', views.classics, name="access_classics"),
+
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 

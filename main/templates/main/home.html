@@ -3,22 +3,125 @@
 {% block title %}Home - Ohara{% endblock %}
 
 {% block content %}
-    <style>
-        html, body {
-            height: 100%;
-            width: 100%%;
-            margin: 0;
-            padding: 0;
-        }
+<style>
+    html, body {
+        height: 100%;
+        width: 100%%;
+        margin: 0;
+        padding: 0;
+        overflow: auto;
+    }
 
-        body {
-            background-image: url('https://cdn.discordapp.com/attachments/957691738015826000/1120419187752456313/weblogo.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: repeat;
-        }
+    body {
+        background-image: url('https://r4.wallpaperflare.com/wallpaper/599/667/668/anime-landscape-library-nature-hd-wallpaper-f8964df890800c28607c410ea802a41a.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: repeat;
+        overflow: auto;
+    }
+
+    h2 {
+        background-color: #1f1f1f;
+        color: #9affff;
+        padding: 10px;
+        text-align: center;
+        margin: 0;
+        margin-left: 8px;
+    
+    }
 
 
-    </style>
+    th,
+    td {
+        padding: 8px;
+        text-align: center;
+        font-size: 9px;
+    }
 
+    th {
+        color: #9affff;
+        align-items: center;
+    }
+
+    td {
+        color: #9affff;
+        align-items: center;
+    }
+
+    ul {
+        list-style-type: disc;
+        align-items: center;
+    }
+
+    li {
+        margin-bottom: 5px;
+        align-items: center;
+    }
+
+    .grid-container {
+        display: flex;
+        flex-wrap: wrap; /* Allows items to wrap to the next row */
+        justify-content: center; /* Centers the items horizontally */
+        align-items: center; /* Centers the items vertically */
+        grid-gap: 17px; /* Adds a 10px gap between grid items */
+        overflow: auto; /* Enable scrolling if content overflows */
+        padding: 20px;
+        background-color: black;
+        margin-left: 8px;
+    }
+
+    .grid-item {
+        margin-top: 2px;
+        background-color: #1f1f1f;
+        padding: 20px;
+        padding-bottom: 10px;
+        justify-content: center;
+        align-items: center;
+        width: 15%; /* Adjust the width to make the grid items smaller */
+        max-width: 200px; /* Limit the maximum width of grid items */
+        display: flex; /* Added to ensure proper alignment */
+        flex-direction: column; /* Added to ensure proper alignment */
+        justify-content: center; /* Centers content vertically */
+        align-items: center; /* Centers content horizontally */
+    }
+
+    img {
+        max-width: 100%;
+        max-height: 100px;
+        align-self: center; /* Centers the image within the grid item */
+        align-items: center;
+    }
+
+    .manga-title {
+        color: #cccccc;
+        margin-top: 10px;
+        text-align: center;
+        align-items: center;
+        font-size: 8px;
+    }
+</style>
+
+<h2> Top 100 </h2>
+<div class="grid-container">
+    {% for manga in mangas %}
+    <div class="grid-item">
+        <a href="{% url 'manga_detail' manga.manga_id %}">
+            <img src="{{ manga.main_picture }}" alt="Image">
+        </a>
+        <div class="manga-title">{{ manga.title }}</div>
+    </div>
+    {% endfor %}
+</div>
+
+<h2> Classics </h2>
+<div class="grid-container">
+    {% for manga in mangas1 %}
+    <div class="grid-item">
+        <a href="{% url 'manga_detail' manga.manga_id %}">
+            <img src="{{ manga.main_picture }}" alt="Image">
+        </a>
+        <div class="manga-title">{{ manga.title }}</div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

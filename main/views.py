@@ -11,11 +11,48 @@ import json
 # Create your views here.
 
 def home(request):
-    manga = Manga.objects.using('default').all()
-    context = {
-        'mangas': manga
-    }
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT manga_id, title, type, chapters, status, score, main_picture FROM manga WHERE sfw = 'True' AND score IS NOT NULL AND main_picture IS NOT NULL ORDER BY score DESC LIMIT 5")
+        rows = cursor.fetchall()
+        if rows:
+            mangas = []
+            for row in rows:
+                manga = {
+                    'manga_id': row[0],
+                    'title': row[1],
+                    'type': row[2],
+                    'chapters': row[3],
+                    'status': row[4],
+                    'score': row[5],
+                    'main_picture': row[6]
+                }
+                mangas.append(manga)
+
+        cursor.execute('''SELECT manga_id, title, type, chapters, status, score, main_picture, scored_by FROM manga WHERE sfw = 'True' AND score IS NOT NULL AND main_picture IS NOT NULL ORDER BY scored_by DESC LIMIT 5''')
+        rows = cursor.fetchall()
+        if rows:
+            mangas1 = []
+            for row in rows:
+                manga = {
+                    'manga_id': row[0],
+                    'title': row[1],
+                    'type': row[2],
+                    'chapters': row[3],
+                    'status': row[4],
+                    'score': row[5],
+                    'main_picture': row[6],
+                    'scored_by': row[7]
+                }
+                mangas1.append(manga)
+
+    context = {'mangas': mangas, 'mangas1': mangas1}
     return render(request, 'main/home.html', context)
+
+    
+
+
+   
+   
 
 def access_table(request, manga_id):
     try:
@@ -213,3 +250,31 @@ def manga_template(request, manga_id):
         return render(request, 'main/manga_template.html', context)
     else:
         return HttpResponse('Manga not found')
+    
+
+
+def classics(request):
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute('''SELECT manga_id, title, type, chapters, status, score, main_picture, scored_by FROM manga WHERE sfw = 'True' AND score IS NOT NULL AND main_picture IS NOT NULL ORDER BY scored_by DESC LIMIT 100''')
+            rows = cursor.fetchall()
+            if rows:
+                mangas = []
+                for row in rows:
+                    manga = {
+                        'manga_id': row[0],
+                        'title': row[1],
+                        'type': row[2],
+                        'chapters': row[3],
+                        'status': row[4],
+                        'score': row[5],
+                        'main_picture': row[6],
+                        'scored_by': row[7]
+                    }
+                    mangas.append(manga)
+                context = {'mangas': mangas}
+                return render(request, 'main/classics.html', context)
+            else:
+                return HttpResponse('No mangas found')
+    except OperationalError:
+        return HttpResponse('Table access failed')
