@@ -9,7 +9,7 @@
         width: 100%%;
         margin: 0;
         padding: 0;
-        overflow: auto;
+        overflow: hidden;
     }
 
     body {
@@ -20,14 +20,20 @@
         overflow: auto;
     }
 
+    body::-webkit-scrollbar
+    {
+        display: none;
+
+    }
+
     h2 {
         background-color: #1f1f1f;
         color: #9affff;
         padding: 10px;
         text-align: center;
         margin: 0;
-        margin-left: 8px;
-    
+        margin-left: 9px;
+        flex-grow: 1; /* Expand to fill available space */
     }
 
 
@@ -68,6 +74,7 @@
         padding: 20px;
         background-color: black;
         margin-left: 8px;
+        position: relative;
     }
 
     .grid-item {
@@ -99,9 +106,150 @@
         align-items: center;
         font-size: 8px;
     }
+
+    .show-more-box {
+        margin-left: 8px;
+        background-color: #960018;;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s, color 0.3s;
+        text-align: center;
+
+    }
+    
+    .show-more-box:hover {
+        background-color: #fff; /* Invert the background color on hover */
+        color: #960018; /* Invert the text color on hover */
+        text-align: center;
+
+    }
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .show-more-link {
+        color: white;
+        text-decoration: none;
+        text-align: ceneter;
+    }
+    .slideshow-container {
+        position: relative;
+        width: 900px; 
+        height: 100px; 
+        margin-left: 130px;
+        background-color: black;
+        padding: 20px; 
+        margin-bottom: 20px;
+        overflow: hidden;
+    }
+    
+    .mySlides img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        
+
+    }
+
+
+
+    .caption-container {
+        position: absolute;
+        top: 20px; /* Adjust the vertical position */
+        left: 50%;
+        transform: translateX(-50%);
+        background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+        padding: 10px;
+        border-radius: 5px;
+        width: 100%; /* Ensure the caption spans the entire container */
+        text-align: center;
+    }
+
+
+    .caption {
+        color: white;
+        font-size: 20px;
+        margin: 0;
+    }
+
+    .header-box {
+        text-align: center;
+        padding: 20px;
+        background-color:#960018;
+        margin-bottom: 20px;
+        margin-left: 10px;
+        items: center;
+        border: 20px solid black; /* Add a black border */
+        border-radius: 5px; /* Add rounded corners */
+    }
+    
+    .header-box img {
+        max-width: 100%;
+    }
 </style>
 
+<div class="header-box">
+    <a href="/">
+        <img src="https://fontmeme.com/temporary/43d84fad35478a6bfc1c585bda2e35d5.png" alt="Header Image">
+    </a>
+</div>
+
+
+<div class="slideshow-container">
+    {% for manga in mangas %}
+    <div class="mySlides fade">
+        <a href="/manga/13/">
+            <img src="https://www.escapistmagazine.com/wp-content/uploads/2023/08/onepieceranking1.jpg" width="900" height="480" alt="Slide">
+        </a>
+    </div>
+
+    <div class="mySlides fade">
+        <a href="/manga/11/">
+            <img src="https://i0.wp.com/codigoespagueti.com/wp-content/uploads/2022/06/Los-10-mejores-capitulos-de-Naruto-Shippuden-segun-IMDb.jpg" width="900" height="480" alt="Slide">
+        </a>
+    </div>
+
+    <div class="mySlides fade">
+        <a href="/manga/12/">
+            <img src="https://i0.wp.com/www.theanimedaily.com/wp-content/uploads/2022/02/16443342279441613289020115045887.jpg?fit=1920%2C1080&ssl=1" width="900" height="480" alt="Slide">
+        </a>
+    </div>
+    {% endfor %}
+    <!-- Move the caption outside of individual slides -->
+    <div class="caption-container">
+        <div class="caption">THE BIG THREE</div>
+    </div>
+</div>
+
+<script>
+    var slideIndex = 0;
+    showSlides();
+
+    function showSlides() {
+        var i;
+        var slides = document.querySelectorAll(".slideshow-container .mySlides");
+        var caption = document.querySelector(".slideshow-container .caption");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) {
+            slideIndex = 1;
+        }
+        slides[slideIndex - 1].style.display = "block";
+        caption.style.display = "block";
+        setTimeout(showSlides, 3000); // Change image every 3 seconds
+    }
+</script>
+
 <h2> Top 100 </h2>
+<div class="show-more-box">
+    <a href="/access-top-100" class="show-more-link">Show More</a>
+</div>
 <div class="grid-container">
     {% for manga in mangas %}
     <div class="grid-item">
@@ -114,6 +262,9 @@
 </div>
 
 <h2> Classics </h2>
+<div class="show-more-box">
+    <a href="/access-classics/" class="show-more-link">Show More</a>
+</div>
 <div class="grid-container">
     {% for manga in mangas1 %}
     <div class="grid-item">
@@ -124,4 +275,8 @@
     </div>
     {% endfor %}
 </div>
+
+
 {% endblock %}
+
+

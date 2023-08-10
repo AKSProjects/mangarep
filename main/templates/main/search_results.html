@@ -1,0 +1,102 @@
+{% extends 'main/base.html' %}<html>
+
+{% block title %}Search Results{% endblock %}
+
+{% block content %}
+<html>
+<head>
+    <style>
+        html,
+        body {
+            background-color: #181a1b;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        h1 {
+            background-color: #1f1f1f;
+            color: #9affff;
+            padding: 10px;
+            text-align: center;
+            margin: 0;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            color: #9affff;
+        }
+
+        td {
+            color: #9affff;
+        }
+
+        ul {
+            list-style-type: disc;
+        }
+
+        li {
+            margin-bottom: 5px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* Creates 5 equal-width columns */
+            grid-gap: 10px; /* Adds a 10px gap between grid items */
+            padding: 20px;
+            /* Adjust the height of the grid container if needed */
+            overflow: auto; /* Enable scrolling if content overflows */
+        }
+
+        .grid-item {
+            margin-top: 10px;
+            background-color: #1f1f1f;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .manga-title {
+            color: #cccccc;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+
+    <title>Search Results - Ohara</title>
+</head>
+<body>
+    <h1>Search Results</h1>
+
+    <div class="grid-container">
+        {% for manga in search_results %}
+        <div class="grid-item">
+            <a href="{% url 'manga_detail' manga.manga_id %}">
+                <img src="{{ manga.main_picture.url }}" alt="Image" width="300" height="200">
+            </a>
+            <div class="manga-title">{{ manga.title }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
+
+{% endblock %}

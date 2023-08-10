@@ -10,6 +10,14 @@ import json
 
 # Create your views here.
 
+def search_manga(request):
+    query = request.GET.get('q')
+    search_results = Manga.objects.filter(title__icontains=query)
+    print("Query:", query)
+    print("Results:", search_results)
+    context = {'search_results': search_results}
+    return render(request, 'main/search_results.html', context)
+
 def home(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT manga_id, title, type, chapters, status, score, main_picture FROM manga WHERE sfw = 'True' AND score IS NOT NULL AND main_picture IS NOT NULL ORDER BY score DESC LIMIT 5")
